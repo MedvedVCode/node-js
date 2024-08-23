@@ -1,51 +1,15 @@
 const express = require('express');
-const { v4: uuid } = require('uuid');
+const router = express.Router();
 
-const port = process.env.PORT || 3000;
-const app = express();
-app.use(express.json());
+const library = require('../storage.js');
+const Book = require('../Book.js');
 
-class Book {
-	constructor(
-		title = '',
-		description = '',
-		authors = '',
-		favorite = '',
-		fileCover = '',
-		fileName = ''
-	) {
-		this.id = uuid();
-		this.title = title;
-		this.description = description;
-		this.authors = authors;
-		this.favorite = favorite;
-		this.fileCover = fileCover;
-		this.fileName = fileName;
-	}
-}
-
-const library = {
-	books: [
-		new Book('Война и мир', 'почти не скучная', 'Толстой Л.Н.', 'yes'),
-		new Book(
-			'Преступление и наказание',
-			'о бедном студенте замолвите слово',
-			'Достоевский Ф.М.',
-			'no'
-		),
-	],
-};
-
-app.post('/api/user/login', (req, res) => {
-	res.status(201).json({ id: 1, mail: 'test@mail.ru' });
-});
-
-app.get('/api/books', (req, res) => {
+router.get('/books', (req, res) => {
 	const { books } = library;
 	res.json(books);
-});
+})
 
-app.get('/api/books/:id', (req, res) => {
+router.get('/books/:id', (req, res) => {
 	const book = library.books.find((book) => book.id === req.params.id);
 
 	if (!book) {
@@ -55,7 +19,7 @@ app.get('/api/books/:id', (req, res) => {
 	res.json(book);
 });
 
-app.post('/api/books', (req, res) => {
+router.post('/books', (req, res) => {
 	const { title, description, authors, favorite, fileCover, fileName } =
 		req.body;
 	const newBook = new Book(
@@ -71,7 +35,7 @@ app.post('/api/books', (req, res) => {
 	res.status(201).json(newBook);
 });
 
-app.put('/api/books/:id', (req, res) => {
+router.put('/books/:id', (req, res) => {
 	const id = library.books.findIndex((book) => book.id === req.params.id);
 	if (id === -1) {
 		res.status(404).json({ message: 'Книга не найдена' });
@@ -93,7 +57,7 @@ app.put('/api/books/:id', (req, res) => {
 	}
 });
 
-app.delete('/api/books/:id', (req, res) => {
+router.delete('/books/:id', (req, res) => {
 	const id = library.books.findIndex((book) => book.id === req.params.id);
 	if (id === -1) {
 		res.status(404).json({ message: 'Книга не найдена' });
@@ -103,6 +67,4 @@ app.delete('/api/books/:id', (req, res) => {
 	}
 });
 
-app.listen(port, () => {
-	console.log('Сервер запущен на порту ', port);
-});
+module.exports = router

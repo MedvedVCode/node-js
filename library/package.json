@@ -1,7 +1,7 @@
 {
-  "name": "2.1",
+  "name": "library",
   "version": "1.0.0",
-  "main": "task_2.1.js",
+  "main": "library.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "node -r dotenv/config task_2.1.js"
