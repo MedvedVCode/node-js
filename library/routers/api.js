@@ -70,14 +70,16 @@ router.delete('/books/:id', (req, res) => {
 	if (id === -1) {
 		res.status(404).json({ message: 'Книга не найдена' });
 	} else {
+		// Если надо удалить книгу с диска физически
 		// const fileBook = library.books[id].fileBook;
-
-		library.books.splice(id, 1);
 		// fs.unlink(__dirname + '\\..\\' + fileBook, (err) => {
 		// 	if (err) {
 		// 		console.error('Ошибка удаления файла', err);
 		// 	}
 		// });
+
+		library.books.splice(id, 1);
+
 		res.json('ok');
 	}
 });
