@@ -2,7 +2,7 @@ const express = require('express');
 require('dotenv').config();
 const logger = require('./middleware/logger');
 const error404 = require('./middleware/error404');
-const apiRouter = require('./routers/index');
+const apiRouter = require('./routers/api');
 const userRouter = require('./routers/user');
 
 const port = process.env.PORT || 3000;

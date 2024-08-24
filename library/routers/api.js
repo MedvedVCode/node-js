@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const fileMulter = require('../middleware/file.js');
 
 const library = require('../storage/storage.js');
 const Book = require('../storage/Book.js');
@@ -7,7 +8,7 @@ const Book = require('../storage/Book.js');
 router.get('/books', (req, res) => {
 	const { books } = library;
 	res.json(books);
-})
+});
 
 router.get('/books/:id', (req, res) => {
 	const book = library.books.find((book) => book.id === req.params.id);
@@ -19,16 +20,22 @@ router.get('/books/:id', (req, res) => {
 	res.json(book);
 });
 
-router.post('/books', (req, res) => {
-	const { title, description, authors, favorite, fileCover, fileName } =
-		req.body;
-		const newBook = new Book(
+router.post('/books', fileMulter.single('fileBook'), (req, res) => {
+	console.log(req.file, req.body);
+
+	const { title, description, authors, favorite, fileCover } = req.body;
+
+	const fileName = req.file.filename;
+	const fileBook = req.file.path;
+
+	const newBook = new Book(
 		title,
 		description,
 		authors,
 		favorite,
 		fileCover,
-		fileName
+		fileName,
+		fileBook
 	);
 
 	library.books.push(newBook);
@@ -40,8 +47,10 @@ router.put('/books/:id', (req, res) => {
 	if (id === -1) {
 		res.status(404).json({ message: 'Книга не найдена' });
 	} else {
-		const { title, description, authors, favorite, fileCover, fileName } =
-			req.body;
+		const { title, description, authors, favorite, fileCover } = req.body;
+
+		const fileName = req.file.filename;
+		const fileBook = req.file.path;
 
 		library.books[id] = {
 			...library.books[id],
@@ -67,4 +76,4 @@ router.delete('/books/:id', (req, res) => {
 	}
 });
 
-module.exports = router
+module.exports = router;
