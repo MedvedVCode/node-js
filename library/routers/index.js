@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
-const library = require('../storage.js');
-const Book = require('../Book.js');
+const library = require('../storage/storage.js');
+const Book = require('../storage/Book.js');
 
 router.get('/books', (req, res) => {
 	const { books } = library;
@@ -22,7 +22,7 @@ router.get('/books/:id', (req, res) => {
 router.post('/books', (req, res) => {
 	const { title, description, authors, favorite, fileCover, fileName } =
 		req.body;
-	const newBook = new Book(
+		const newBook = new Book(
 		title,
 		description,
 		authors,
