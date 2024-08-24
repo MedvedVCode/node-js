@@ -5,7 +5,7 @@ class Book {
 		title = '',
 		description = '',
 		authors = '',
-		favorite = '',
+		favorite = false,
 		fileCover = '',
 		fileName = '',
 		fileBook = ''

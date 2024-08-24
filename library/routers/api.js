@@ -1,4 +1,5 @@
 const express = require('express');
+const fs = require('fs');
 const router = express.Router();
 const fileMulter = require('../middleware/file.js');
 
@@ -32,7 +33,7 @@ router.post('/books', fileMulter.single('fileBook'), (req, res) => {
 		title,
 		description,
 		authors,
-		favorite,
+		Boolean(favorite),
 		fileCover,
 		fileName,
 		fileBook
@@ -42,27 +43,25 @@ router.post('/books', fileMulter.single('fileBook'), (req, res) => {
 	res.status(201).json(newBook);
 });
 
-router.put('/books/:id', (req, res) => {
-	const id = library.books.findIndex((book) => book.id === req.params.id);
-	if (id === -1) {
+router.put('/books/:id', fileMulter.single('fileBook'), (req, res) => {
+	const book = library.books.find((book) => book.id === req.params.id);
+	if (!book) {
 		res.status(404).json({ message: 'Книга не найдена' });
 	} else {
 		const { title, description, authors, favorite, fileCover } = req.body;
 
-		const fileName = req.file.filename;
-		const fileBook = req.file.path;
+		if (title) book.title = title;
+		if (description) book.description = description;
+		if (authors) book.authors = authors;
+		if (favorite) book.favorite = Boolean(favorite);
+		if (fileCover) book.fileCover = fileCover;
 
-		library.books[id] = {
-			...library.books[id],
-			title,
-			description,
-			authors,
-			favorite,
-			fileCover,
-			fileName,
-		};
+		if (req.file) {
+			book.fileName = req.file.filename;
+			book.fileBook = req.file.path;
+		}
 
-		res.json(library.books[id]);
+		res.json(book);
 	}
 });
 
@@ -71,9 +70,26 @@ router.delete('/books/:id', (req, res) => {
 	if (id === -1) {
 		res.status(404).json({ message: 'Книга не найдена' });
 	} else {
+		// const fileBook = library.books[id].fileBook;
+
 		library.books.splice(id, 1);
+		// fs.unlink(__dirname + '\\..\\' + fileBook, (err) => {
+		// 	if (err) {
+		// 		console.error('Ошибка удаления файла', err);
+		// 	}
+		// });
 		res.json('ok');
 	}
+});
+
+router.get('/books/:id/download', (req, res) => {
+	const book = library.books.find((book) => book.id === req.params.id);
+
+	if (!book) {
+		return res.status(404).json({ message: 'Книга не найдена' });
+	}
+
+	res.download(__dirname + '\\..\\' + book.fileBook);
 });
 
 module.exports = router;
