@@ -5,13 +5,14 @@ const fileMulter = require('../middleware/file.js');
 
 const library = require('../storage/storage.js');
 const Book = require('../storage/Book.js');
+const { DEFAULT_FILE_COVER } = require('../config.js');
 
 router.get('/books', (req, res) => {
 	const { books } = library;
 	res.render('api/books/index', {
 		title: 'Список книг',
-		books: books
-	})
+		books: books,
+	});
 	// res.json(books);
 });
 
@@ -19,14 +20,27 @@ router.get('/books/:id', (req, res) => {
 	const book = library.books.find((book) => book.id === req.params.id);
 
 	if (!book) {
-		return res.status(404).json({ message: 'Книга не найдена' });
+		return res.status(404);
 	}
 
 	res.render('api/books/view', {
 		title: 'О книге',
-		book: book
-	})
+		book: book,
+	});
 	// res.json(book);
+});
+
+router.get('/books/update/:id', (req, res) => {
+	const book = library.books.find((book) => book.id === req.params.id);
+
+	if (!book) {
+		return res.status(404);
+	}
+
+	res.render('api/books/update', {
+		title: 'Редактировать книгу',
+		book: book,
+	});
 });
 
 router.post('/books', fileMulter.single('fileBook'), (req, res) => {
@@ -48,30 +62,40 @@ router.post('/books', fileMulter.single('fileBook'), (req, res) => {
 	);
 
 	library.books.push(newBook);
+
 	res.status(201).json(newBook);
 });
 
-router.post('update/books/:id', fileMulter.single('fileBook'), (req, res) => {
-	const book = library.books.find((book) => book.id === req.params.id);
-	if (!book) {
-		res.status(404).json({ message: 'Книга не найдена' });
-	} else {
-		const { title, description, authors, favorite, fileCover } = req.body;
+router.post(
+	'/books/update/:id',
+	fileMulter.fields([{ name: 'fileCover' }, { name: 'fileBook' }]),
+	(req, res) => {
+		const book = library.books.find((book) => book.id === req.params.id);
+		if (!book) {
+			res.status(404);
+		} else {
+			const { title, description, authors, favorite } = req.body;
+			if (title) book.title = title;
+			if (description) book.description = description;
+			if (authors) book.authors = authors;
+			book.favorite = Boolean(favorite);
 
-		if (title) book.title = title;
-		if (description) book.description = description;
-		if (authors) book.authors = authors;
-		if (favorite) book.favorite = Boolean(favorite);
-		if (fileCover) book.fileCover = fileCover;
+			if (req.files.fileCover) {
+				book.fileCover = '/' + req.files.fileCover[0].filename;
+			} else {
+				book.fileCover = DEFAULT_FILE_COVER;
+			}
 
-		if (req.file) {
-			book.fileName = req.file.filename;
-			book.fileBook = req.file.path;
+			if (req.files.fileBook) {
+				book.fileName = req.files.fileBook[0].filename;
+				book.fileBook = req.files.fileBook[0].path;
+			}
+
+			// res.json(book);
+			res.redirect('/api/books/' + book.id);
 		}
-
-		res.json(book);
 	}
-});
+);
 
 router.post('/books/delete/:id', (req, res) => {
 	const id = library.books.findIndex((book) => book.id === req.params.id);

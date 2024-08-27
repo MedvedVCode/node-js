@@ -1,40 +1,43 @@
-<%- include('../../port/head', { title: title }) %> 
-<%- include('../../port/menu') %> 
-<%- include('../../port/body_begin', {title:title}) %> 
+<%- include('../../port/head', { title: title }) %> <%-
+include('../../port/menu') %> <%- include('../../port/body_begin',
+{title:title}) %>
+
+<a
+	href="/api/books/new"
+	class="flex gap-3 items-center text-[#ff5959] hover:text-amber-800 mb-10"
+	><span>Новая книга</span> <i class="fa fa-plus fa-xl"></i
+></a>
 
 <% if(books.length) { %>
 
 <table class="w-full">
 	<% books.map((book,idx)=>{ %>
-		<tr class="align-top mb-5">
-			<th class=""><%= idx+1 %></th>
-			<td class="text-center px-3">&laquo <%= book.title %> &raquo</td>
-			<td class="italic px-2"><%= book.authors %></td>
-			<td class="text-[#ff5959]">
-				<div class="flex gap-5 justify-end items-center ml-7">
-					<a href="/api/books/<%= book.id %>">
-						<i class="fa fa-eye fa-xl hover:text-amber-800"></i>
-					</a>
-					<a href="/api/books/<%= book.id %>">
-						<i class="fa fa-edit fa-xl hover:text-amber-800"></i>
-					</a>
-					<form
-						action="/api/books/delete/<%= book.id %>"
-						method="post"
-					>
-						<button>
-							<i class="fa fa-trash fa-xl hover:text-amber-800"></i>
-						</button>
-					</form>
-				</div>
-			</td>
-		</tr>
-		<% }) %>
+	<tr class="align-top mb-5">
+		<th class=""><%= idx+1 %></th>
+		<td class="text-center px-3">&laquo <%= book.title %> &raquo</td>
+		<td class="italic px-2"><%= book.authors %></td>
+		<td class="text-[#ff5959]">
+			<div class="flex gap-5 justify-end items-center ml-7">
+				<a href="/api/books/<%= book.id %>">
+					<i class="fa fa-eye fa-xl hover:text-amber-800"></i>
+				</a>
+				<a href="/api/books/update/<%= book.id %>">
+					<i class="fa fa-edit fa-xl hover:text-amber-800"></i>
+				</a>
+				<form
+					action="/api/books/delete/<%= book.id %>"
+					method="post"
+				>
+					<button>
+						<i class="fa fa-trash fa-xl hover:text-amber-800"></i>
+					</button>
+				</form>
+			</div>
+		</td>
+	</tr>
+	<% }) %>
 </table>
 
 <% } else { %>
-	<p>Записей пока нет</p>
-<% } %>
-
-
-<%- include('../../port/body_end') %>
+<p>Записей пока нет</p>
+<% } %> <%- include('../../port/body_end') %>

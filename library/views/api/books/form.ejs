@@ -1,6 +1,7 @@
 <form
-						action="/api/books/<%= book.id %>"
+						action="/api/books/update/<%= book.id %>"
 						method="post"
+						enctype="multipart/form-data"
 					>
 						<div class="mb-5 flex justify-between gap-3 items-center">
 							<label for="inputTitle">Название книги</label>
