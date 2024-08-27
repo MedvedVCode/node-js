@@ -1,9 +1,10 @@
-<%- include('./views/port/head', { title: title }) %> 
-<%- include('./views/port/menu') %> 
-<%- include('./views/port/body_begin, {title:title}') %> 
+<%- include('../../port/head', { title: title }) %> 
+<%- include('../../port/menu') %> 
+<%- include('../../port/body_begin', {title:title}) %> 
+
+<% if(books.length) { %>
 
 <table class="w-full">
-
 	<% books.map((book,idx)=>{ %>
 		<tr class="align-top mb-5">
 			<th class=""><%= idx+1 %></th>
@@ -28,8 +29,12 @@
 				</div>
 			</td>
 		</tr>
-
 		<% }) %>
-
 </table>
-<%- include('./views/port/body_end') %>
+
+<% } else { %>
+	<p>Записей пока нет</p>
+<% } %>
+
+
+<%- include('../../port/body_end') %>

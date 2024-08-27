@@ -8,7 +8,11 @@ const Book = require('../storage/Book.js');
 
 router.get('/books', (req, res) => {
 	const { books } = library;
-	res.json(books);
+	res.render('api/books/index', {
+		title: 'Список книг',
+		books: books
+	})
+	// res.json(books);
 });
 
 router.get('/books/:id', (req, res) => {
@@ -18,7 +22,11 @@ router.get('/books/:id', (req, res) => {
 		return res.status(404).json({ message: 'Книга не найдена' });
 	}
 
-	res.json(book);
+	res.render('api/books/view', {
+		title: 'О книге',
+		book: book
+	})
+	// res.json(book);
 });
 
 router.post('/books', fileMulter.single('fileBook'), (req, res) => {
@@ -43,7 +51,7 @@ router.post('/books', fileMulter.single('fileBook'), (req, res) => {
 	res.status(201).json(newBook);
 });
 
-router.put('/books/:id', fileMulter.single('fileBook'), (req, res) => {
+router.post('update/books/:id', fileMulter.single('fileBook'), (req, res) => {
 	const book = library.books.find((book) => book.id === req.params.id);
 	if (!book) {
 		res.status(404).json({ message: 'Книга не найдена' });
@@ -65,7 +73,7 @@ router.put('/books/:id', fileMulter.single('fileBook'), (req, res) => {
 	}
 });
 
-router.delete('/books/:id', (req, res) => {
+router.post('/books/delete/:id', (req, res) => {
 	const id = library.books.findIndex((book) => book.id === req.params.id);
 	if (id === -1) {
 		res.status(404).json({ message: 'Книга не найдена' });
@@ -80,7 +88,8 @@ router.delete('/books/:id', (req, res) => {
 
 		library.books.splice(id, 1);
 
-		res.json('ok');
+		// res.json('ok');
+		res.redirect('/api/books');
 	}
 });
 

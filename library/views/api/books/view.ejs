@@ -1,51 +1,48 @@
-<%- include('./views/port/head', { title: title }) %> 
-<%- include('./views/port/menu') %> 
-<%- include('./views/port/body_begin, {title: title}') %>
-					<!-- Вставляем код сюда -->
-					<div class="flex gap-20 pb-10 border-b mb-10">
-						<img
-							src="<%= book.fileCover %>"
-							alt="Обложка книги"
-							width="300px"
-						/>
-						<div>
-							<h2 class="text-xl font-bold mb-5"><%= book.title %></h2>
-							<p class="mb-5 italic"><%= book.authors %></p>
-							<p class="text-slate-600 mb-3">Описание:</p>
-							<p class="mb-7">
-								<%= book.description %>
-							</p>
-							<% if (book.favorite) { %>
-								<p class="uppercase">В избранном</p>
-							<% } %>
-							<% else{ %>
-								<p class="uppercase">не в избранном, почему?</p>
-							<% } %>
-						</div>
-					</div>
-					<div class="flex gap-10 justify-between text-[#ff5959]">
-						<form
-							action="/api/books/<%= book.id %>/download"
-							method="get"
-							class="grow"
-						>
-							<button class="flex gap-4 items-center hover:text-amber-800">
-								<span class="font-bold">Скачать книгу</span>
-								<i class="fa-solid fa-download fa-xl"></i>
-							</button>
-						</form>
-						<a href="/api/books/update/<%= book.id %>">
-							<i class="fa fa-edit fa-xl hover:text-amber-800"></i>
-						</a>
-						<form
-							action="/api/books/delete/<%= book.id %>"
-							method="post"
-							class="self-end"
-						>
-							<button>
-								<i class="fa fa-trash fa-xl hover:text-amber-800"></i>
-							</button>
-						</form>
-					</div>
-					<!-- Окончание вставки -->
-<%- include('./views/port/body_end') %>
+<%- include('../../port/head', { title: title }) %> 
+<%- include('../../port/menu') %> 
+<%- include('../../port/body_begin', {title:title}) %>
+<!-- Вставляем код сюда -->
+<div class="flex gap-20 pb-10 border-b mb-10">
+	<img
+		src="<%= book.fileCover %>"
+		alt="Обложка книги"
+		width="300px"
+	/>
+	<div>
+		<h2 class="text-xl font-bold mb-5"><%= book.title %></h2>
+		<p class="mb-5 italic"><%= book.authors %></p>
+		<p class="text-slate-600 mb-3">Описание:</p>
+		<p class="mb-7"><%= book.description %></p>
+		<% if (book.favorite) { %>
+		<p class="uppercase">В избранном</p>
+		<% } else { %>
+		<p class="uppercase">не в избранном, почему?</p>
+		<% } %>
+	</div>
+</div>
+<div class="flex gap-10 justify-between text-[#ff5959]">
+	<form
+		action="/api/books/<%= book.id %>/download"
+		method="get"
+		class="grow"
+	>
+		<button class="flex gap-4 items-center hover:text-amber-800">
+			<span class="font-bold">Скачать книгу</span>
+			<i class="fa-solid fa-download fa-xl"></i>
+		</button>
+	</form>
+	<a href="/api/books/update/<%= book.id %>">
+		<i class="fa fa-edit fa-xl hover:text-amber-800"></i>
+	</a>
+	<form
+		action="/api/books/delete/<%= book.id %>"
+		method="post"
+		class="self-end"
+	>
+		<button>
+			<i class="fa fa-trash fa-xl hover:text-amber-800"></i>
+		</button>
+	</form>
+</div>
+<!-- Окончание вставки -->
+<%- include('../../port/body_end') %>

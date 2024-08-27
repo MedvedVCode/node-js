@@ -5,8 +5,8 @@ const library = {
 			'Война и мир',
 			'почти не скучная',
 			'Толстой Л.Н.',
-			'yes',
-			'',
+			true,
+			'war-and-piece.jpg',
 			'war-and-piece.txt',
 			'storage\\books\\war-and-piece.txt'
 		),
@@ -14,8 +14,8 @@ const library = {
 			'Преступление и наказание',
 			'о бедном студенте замолвите слово',
 			'Достоевский Ф.М.',
-			'no',
-			'',
+			false,
+			'crime-and-punishment.jpeg',
 			'crime-and-punishment.txt',
 			'storage\\books\\crime-and-punishment.txt'
 		),
