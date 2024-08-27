@@ -1,0 +1,72 @@
+<form
+						action="/api/books/<%= book.id %>"
+						method="post"
+					>
+						<div class="mb-5 flex justify-between gap-3 items-center">
+							<label for="inputTitle">Название книги</label>
+							<input
+								type="text"
+								name="title"
+								value="<%= book.title %>"
+								id="inputTitle"
+								class="ml-5 border border-[#ff5959] rounded-md p-2 w-3/4"
+								placeholder="введите название книги"
+							/>
+						</div>
+						<div class="mb-5 flex justify-between gap-3 items-center">
+							<label for="inputAuthors">Автор</label>
+							<input
+								type="text"
+								name="authors"
+								value="<%= book.authors %>"
+								id="inputAuthors"
+								class="border border-[#ff5959] rounded-md p-2 w-3/4"
+								placeholder="введите автора"
+							/>
+						</div>
+						<div class="mb-5 flex justify-between gap-3 items-center">
+							<label for="inputDescription">Описание</label>
+							<textarea
+								type="text"
+								name="description"
+								id="inputDescription"
+								class="border border-[#ff5959] rounded-md p-2 w-3/4"
+								placeholder="введите описание"
+							><%= book.description %></textarea>
+						</div>
+						<div class="mb-5 flex gap-20 items-center">
+							<label for="inputFavorite">Избранное</label>
+							<input
+								type="checkbox"
+								name="favorite"
+								id="inputFavorite"
+								value = "true"
+								<%= book.favorite ? 'checked' : '' %>
+								class="accent-[#ff5959] w-8 h-8 ml-5"
+							/>
+						</div>
+						<div class="mb-5 flex justify-between gap-3 items-center">
+							<label for="inputFileCover">Обложка книги</label>
+							<input
+								type="file"
+								value="<%= book.fileCover %>"
+								name="fileCover"
+								id="inputFileCover"
+								class="ml-5 border border-[#ff5959] rounded-md p-2 w-3/4"
+							/>
+						</div>
+						<div class="mb-10 flex justify-between gap-3 items-center">
+							<label for="inputFileBook">Файл книги</label>
+							<input
+								type="file"
+								name="fileBook"
+								value="<%= book.fileBook %>"
+								id="inputFileBook"
+								class="ml-5 border border-[#ff5959] rounded-md p-2 w-3/4"
+							/>
+						</div>
+						<button class="block hover:text-amber-800  text-[#ff5959] ml-auto">
+							<span class="font-bold">Сохранить</span>
+							<i class="fa-solid fa-floppy-disk fa-xl ml-3"></i>
+						</button>
+					</form>

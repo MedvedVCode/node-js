@@ -1,0 +1,35 @@
+<%- include('./views/port/head', { title: title }) %> 
+<%- include('./views/port/menu') %> 
+<%- include('./views/port/body_begin, {title:title}') %> 
+
+<table class="w-full">
+
+	<% books.map((book,idx)=>{ %>
+		<tr class="align-top mb-5">
+			<th class=""><%= idx+1 %></th>
+			<td class="text-center px-3">&laquo <%= book.title %> &raquo</td>
+			<td class="italic px-2"><%= book.authors %></td>
+			<td class="text-[#ff5959]">
+				<div class="flex gap-5 justify-end items-center ml-7">
+					<a href="/api/books/<%= book.id %>">
+						<i class="fa fa-eye fa-xl hover:text-amber-800"></i>
+					</a>
+					<a href="/api/books/<%= book.id %>">
+						<i class="fa fa-edit fa-xl hover:text-amber-800"></i>
+					</a>
+					<form
+						action="/api/books/delete/<%= book.id %>"
+						method="post"
+					>
+						<button>
+							<i class="fa fa-trash fa-xl hover:text-amber-800"></i>
+						</button>
+					</form>
+				</div>
+			</td>
+		</tr>
+
+		<% }) %>
+
+</table>
+<%- include('./views/port/body_end') %>
