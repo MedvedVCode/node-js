@@ -5,7 +5,6 @@ const error404 = require('./middleware/error404');
 const apiRouter = require('./routers/api');
 const userRouter = require('./routers/user');
 const indexRouter = require('./routers/index');
-const ejs = require('ejs');
 
 const port = process.env.PORT || 3000;
 const app = express();
@@ -13,7 +12,7 @@ const app = express();
 app.set('view engine', 'ejs');
 
 app.use(express.static(__dirname + '/public/img/'));
-// app.use(express.json());
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(logger);

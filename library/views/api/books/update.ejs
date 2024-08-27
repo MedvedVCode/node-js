@@ -1,5 +1,11 @@
 <%- include('../../port/head', { title: title }) %> 
 <%- include('../../port/menu') %> 
 <%- include('../../port/body_begin', {title:title}) %> 
+<form
+						action="/api/books/update/<%= book.id %>"
+						method="post"
+						enctype="multipart/form-data"
+					>
 <%- include('form', {book: book}) %>
+</form>
 <%- include('../../port/body_end') %>
