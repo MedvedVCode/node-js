@@ -8,18 +8,26 @@ const Book = require('../storage/Book.js');
 const { DEFAULT_FILE_COVER } = require('../config.js');
 
 router.get('/books', (req, res) => {
-	const { books } = library;
-	res.render('api/books/index', {
-		title: 'Список книг',
-		books: books,
-	});
+	try {
+		const { books } = library;
+		res.render('api/books/index', {
+			title: 'Список книг',
+			books: books,
+		});
+	} catch {
+		res.status(500).json({ message: 'Что-то пошло не так' });
+	}
 	// res.json(books);
 });
 
 router.get('/books/create', (req, res) => {
-	res.render('api/books/create', {
-		title: 'Добавить книгу',
-	});
+	try {
+		res.render('api/books/create', {
+			title: 'Добавить книгу',
+		});
+	} catch {
+		res.status(500).json({ message: 'Что-то пошло не так' });
+	}
 });
 
 router.get('/books/:id', (req, res) => {
@@ -29,13 +37,16 @@ router.get('/books/:id', (req, res) => {
 		return res.status(404).json('Потерялась книга');
 	}
 
-	res.render('api/books/view', {
-		title: 'О книге',
-		book: book,
-	});
+	try {
+		res.render('api/books/view', {
+			title: 'О книге',
+			book: book,
+		});
+	} catch {
+		res.status(500).json({ message: 'Что-то пошло не так' });
+	}
 	// res.json(book);
 });
-
 
 router.post(
 	'/books/create',
@@ -54,20 +65,23 @@ router.post(
 			fileName = req.files.fileBook[0].filename;
 			fileBook = req.files.fileBook[0].path;
 		}
+		try {
+			const newBook = new Book(
+				title,
+				description,
+				authors,
+				Boolean(favorite),
+				fileCover,
+				fileName,
+				fileBook
+			);
 
-		const newBook = new Book(
-			title,
-			description,
-			authors,
-			Boolean(favorite),
-			fileCover,
-			fileName,
-			fileBook
-		);
+			library.books.push(newBook);
 
-		library.books.push(newBook);
-
-		res.redirect('/api/books');
+			res.redirect('/api/books');
+		} catch (err) {
+			res.status(500).json({ message: 'Что-то пошло не так' });
+		}
 		// res.status(201).json(newBook);
 	}
 );
@@ -79,10 +93,14 @@ router.get('/books/update/:id', (req, res) => {
 		return res.status(404).json({ message: 'Книга не найдена' });
 	}
 
-	res.render('api/books/update', {
-		title: 'Редактировать книгу',
-		book: book,
-	});
+	try {
+		res.render('api/books/update', {
+			title: 'Редактировать книгу',
+			book: book,
+		});
+	} catch {
+		res.status(500).json({ message: 'Что-то пошло не так' });
+	}
 });
 
 router.post(
@@ -92,7 +110,8 @@ router.post(
 		const book = library.books.find((book) => book.id === req.params.id);
 		if (!book) {
 			res.status(404).json({ message: 'Книга не найдена' });
-		} else {
+		}
+		try {
 			const { title, description, authors, favorite } = req.body;
 			if (title) book.title = title;
 			if (description) book.description = description;
@@ -110,6 +129,8 @@ router.post(
 
 			// res.json(book);
 			res.redirect('/api/books/' + book.id);
+		} catch {
+			res.status(500).json({ message: 'Что-то пошло не так' });
 		}
 	}
 );
@@ -119,18 +140,12 @@ router.post('/books/delete/:id', (req, res) => {
 	if (id === -1) {
 		res.status(404).json({ message: 'Книга не найдена' });
 	} else {
-		// Если надо удалить книгу с диска физически
-		// const fileBook = library.books[id].fileBook;
-		// fs.unlink(__dirname + '\\..\\' + fileBook, (err) => {
-		// 	if (err) {
-		// 		console.error('Ошибка удаления файла', err);
-		// 	}
-		// });
-
-		library.books.splice(id, 1);
-
-		// res.json('ok');
-		res.redirect('/api/books');
+		try {
+			library.books.splice(id, 1);
+			res.redirect('/api/books');
+		} catch {
+			res.status(500).json({ message: 'Что-то пошло не так' });
+		}
 	}
 });
 
@@ -141,7 +156,11 @@ router.get('/books/:id/download', (req, res) => {
 		return res.status(404).json({ message: 'Книга не найдена' });
 	}
 
-	res.download(__dirname + '\\..\\' + book.fileBook);
+	try {
+		res.download(__dirname + '\\..\\' + book.fileBook);
+	} catch {
+		res.status(500).json({ message: 'Что-то пошло не так' });
+	}
 });
 
 module.exports = router;
