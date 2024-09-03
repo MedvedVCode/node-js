@@ -1,0 +1,109 @@
+root@medved-VirtualBox:/usr/bin# docker pull busybox
+Using default tag: latest
+latest: Pulling from library/busybox
+3d1a87f2317d: Pull complete
+Digest: sha256:82742949a3709938cbeb9cec79f5eaf3e48b255389f2dcedf2de29ef96fd841c
+Status: Downloaded newer image for busybox:latest
+docker.io/library/busybox:latest
+
+root@medved-VirtualBox:/usr/bin# docker run --name pinger busybox ping -c 7 netology.ru
+PING netology.ru (188.114.99.224): 56 data bytes
+64 bytes from 188.114.99.224: seq=0 ttl=49 time=23.315 ms
+64 bytes from 188.114.99.224: seq=1 ttl=49 time=23.510 ms
+64 bytes from 188.114.99.224: seq=2 ttl=49 time=22.912 ms
+64 bytes from 188.114.99.224: seq=3 ttl=49 time=23.478 ms
+64 bytes from 188.114.99.224: seq=4 ttl=49 time=23.172 ms
+64 bytes from 188.114.99.224: seq=5 ttl=49 time=23.263 ms
+64 bytes from 188.114.99.224: seq=6 ttl=49 time=23.208 ms
+
+--- netology.ru ping statistics ---
+7 packets transmitted, 7 packets received, 0% packet loss
+round-trip min/avg/max = 22.912/23.265/23.510 ms
+
+root@medved-VirtualBox:/usr/bin# docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+
+root@medved-VirtualBox:/usr/bin# docker ps -a
+CONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS                     PORTS     NAMES
+eb2b75b8abcb   busybox   "ping -c 7 netology.…"   17 seconds ago   Exited (0) 9 seconds ago             pinger
+34e899956fe9   nginx     "/docker-entrypoint.…"   10 months ago    Exited (0) 10 months ago             nginx_test
+
+root@medved-VirtualBox:/usr/bin# docker logs pinger
+PING netology.ru (188.114.99.224): 56 data bytes
+64 bytes from 188.114.99.224: seq=0 ttl=49 time=23.315 ms
+64 bytes from 188.114.99.224: seq=1 ttl=49 time=23.510 ms
+64 bytes from 188.114.99.224: seq=2 ttl=49 time=22.912 ms
+64 bytes from 188.114.99.224: seq=3 ttl=49 time=23.478 ms
+64 bytes from 188.114.99.224: seq=4 ttl=49 time=23.172 ms
+64 bytes from 188.114.99.224: seq=5 ttl=49 time=23.263 ms
+64 bytes from 188.114.99.224: seq=6 ttl=49 time=23.208 ms
+
+--- netology.ru ping statistics ---
+7 packets transmitted, 7 packets received, 0% packet loss
+round-trip min/avg/max = 22.912/23.265/23.510 ms
+
+root@medved-VirtualBox:/usr/bin# docker start pinger
+pinger
+
+root@medved-VirtualBox:/usr/bin# docker ps -a
+CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS                     PORTS     NAMES
+eb2b75b8abcb   busybox   "ping -c 7 netology.…"   5 minutes ago   Up 6 seconds                         pinger
+34e899956fe9   nginx     "/docker-entrypoint.…"   10 months ago   Exited (0) 10 months ago             nginx_test
+
+root@medved-VirtualBox:/usr/bin# docker logs pinger -t
+2024-09-03T08:00:14.168506149Z PING netology.ru (188.114.99.224): 56 data bytes
+2024-09-03T08:00:14.168556480Z 64 bytes from 188.114.99.224: seq=0 ttl=49 time=23.315 ms
+2024-09-03T08:00:15.172622145Z 64 bytes from 188.114.99.224: seq=1 ttl=49 time=23.510 ms
+2024-09-03T08:00:16.173389155Z 64 bytes from 188.114.99.224: seq=2 ttl=49 time=22.912 ms
+2024-09-03T08:00:17.179885416Z 64 bytes from 188.114.99.224: seq=3 ttl=49 time=23.478 ms
+2024-09-03T08:00:18.180595300Z 64 bytes from 188.114.99.224: seq=4 ttl=49 time=23.172 ms
+2024-09-03T08:00:19.180965305Z 64 bytes from 188.114.99.224: seq=5 ttl=49 time=23.263 ms
+2024-09-03T08:00:20.182998910Z 64 bytes from 188.114.99.224: seq=6 ttl=49 time=23.208 ms
+2024-09-03T08:00:20.183024552Z
+2024-09-03T08:00:20.183029173Z --- netology.ru ping statistics ---
+2024-09-03T08:00:20.183033703Z 7 packets transmitted, 7 packets received, 0% packet loss
+2024-09-03T08:00:20.183037753Z round-trip min/avg/max = 22.912/23.265/23.510 ms
+2024-09-03T08:06:03.368730676Z PING netology.ru (188.114.99.224): 56 data bytes
+2024-09-03T08:06:03.368765460Z 64 bytes from 188.114.99.224: seq=0 ttl=49 time=22.780 ms
+2024-09-03T08:06:04.369322463Z 64 bytes from 188.114.99.224: seq=1 ttl=49 time=22.831 ms
+2024-09-03T08:06:05.370905549Z 64 bytes from 188.114.99.224: seq=2 ttl=49 time=23.232 ms
+2024-09-03T08:06:06.389373684Z 64 bytes from 188.114.99.224: seq=3 ttl=49 time=22.812 ms
+2024-09-03T08:06:07.390425562Z 64 bytes from 188.114.99.224: seq=4 ttl=49 time=22.926 ms
+2024-09-03T08:06:08.392464930Z 64 bytes from 188.114.99.224: seq=5 ttl=49 time=23.201 ms
+2024-09-03T08:06:09.392995602Z 64 bytes from 188.114.99.224: seq=6 ttl=49 time=23.298 ms
+2024-09-03T08:06:09.393020903Z
+2024-09-03T08:06:09.393025574Z --- netology.ru ping statistics ---
+2024-09-03T08:06:09.393029663Z 7 packets transmitted, 7 packets received, 0% packet loss
+2024-09-03T08:06:09.393033783Z round-trip min/avg/max = 22.780/23.011/23.298 ms
+
+root@medved-VirtualBox:/usr/bin# exit
+
+2 запуска команды ping и 14 отправленных запросов
+
+medved@medved-VirtualBox:~$ docker ps -a
+CONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS                     PORTS     NAMES
+eb2b75b8abcb   busybox   "ping -c 7 netology.…"   11 minutes ago   Exited (0) 3 minutes ago             pinger
+34e899956fe9   nginx     "/docker-entrypoint.…"   10 months ago    Exited (0) 10 months ago             nginx_test
+
+medved@medved-VirtualBox:~$ docker rm pinger
+pinger
+
+medved@medved-VirtualBox:~$ docker ps -a
+CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS                     PORTS     NAMES
+34e899956fe9   nginx     "/docker-entrypoint.…"   10 months ago   Exited (0) 10 months ago             nginx_test
+
+medved@medved-VirtualBox:~$ docker images
+REPOSITORY   TAG       IMAGE ID       CREATED         SIZE
+nginx        latest    bc649bab30d1   10 months ago   187MB
+busybox      latest    87ff76f62d36   15 months ago   4.26MB
+
+medved@medved-VirtualBox:~$ docker rmi 87ff
+Untagged: busybox:latest
+Untagged: busybox@sha256:82742949a3709938cbeb9cec79f5eaf3e48b255389f2dcedf2de29ef96fd841c
+Deleted: sha256:87ff76f62d367950186bde563642e39208c0e2b4afc833b4b3b01b8fef60ae9e
+Deleted: sha256:e215fa422c604a8ea57ffcf6abc11e686d50a89f861c9b90adbb76033a956c66
+
+medved@medved-VirtualBox:~$ docker images
+REPOSITORY   TAG       IMAGE ID       CREATED         SIZE
+nginx        latest    bc649bab30d1   10 months ago   187MB
+
