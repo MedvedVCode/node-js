@@ -1,6 +1,6 @@
 FROM node:20.17-alpine
 
-WORKDIR /
+WORKDIR /library
 
 ARG NODE_ENV=production
 
