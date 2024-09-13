@@ -665,3 +665,10 @@
 1724811822825 GET /api/books
 1724811825194 POST /api/books/delete/5e2ba01d-166e-4ac2-b6c1-1fa31c85e779
 1724811825198 GET /api/books
+1726248325453 GET /
+1726248326118 GET /img/logo.png
+1726248326123 GET /img/logo.png
+1726248328385 GET /api/books/
+1726248331765 GET /api/books/update/29c0c3fb-7e78-4b7e-bdb6-587caf8377f3
+1726248336032 GET /api/books/29c0c3fb-7e78-4b7e-bdb6-587caf8377f3
+1726248341775 GET /api/books/update/29c0c3fb-7e78-4b7e-bdb6-587caf8377f3

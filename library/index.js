@@ -1,5 +1,4 @@
 const express = require('express');
-require('dotenv').config();
 const logger = require('./middleware/logger');
 const error404 = require('./middleware/error404');
 const apiRouter = require('./routers/api');
