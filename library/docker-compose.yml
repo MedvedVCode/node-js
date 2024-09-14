@@ -4,7 +4,7 @@ services:
     volumes:
       - ./data:/data
   pages:
-    image: medvedvjava/counter:v2.0.0
+    image: medvedvjava/counter:v3.0.0
     environment:
       - PORT=3003
       - REDIS_URL=redis://storage
@@ -13,7 +13,7 @@ services:
     depends_on:
       - storage 
   library:
-    build: .
+    image: medvedvjava/library:v2.0.0
     environment:
       - PORT=3002
       - PAGES_HOST=pages
