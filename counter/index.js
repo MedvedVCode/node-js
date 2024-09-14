@@ -1,6 +1,6 @@
 const express = require('express');
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 const app = express();
 
 const redis = require('redis');
@@ -18,23 +18,23 @@ client.on('ready', () => {
 
 app.get('/counter/:bookId', async (req, res) => {
 	const { bookId } = req.params;
-	try{
-		const counter = await client.get(bookId) | 0;
-		res.json({ bookId:bookId, count:counter });
-	} catch (e){
-		res.json({errcode: 500, errmessage: `Что-то пошло не так в Redis ${e}!`});
+	try {
+		const counter = (await client.get(bookId)) | 0;
+		res.json({ count: counter });
+	} catch (e) {
+		res.json({ errcode: 500, errmessage: `Что-то пошло не так в Redis ${e}!` });
 	}
-})
+});
 
 app.post('/counter/:bookId/incr', async (req, res) => {
 	const { bookId } = req.params;
-	try{
-		const counter = await client.incr(bookId);
-		res.json({ bookId:bookId, count:counter });
-	} catch (e){
-		res.json({errcode: 500, errmessage: `Что-то пошло не так в Redis ${e}!`});
+	try {
+		const result = await client.incr(bookId);
+		res.json({ status: 200, message: result });
+	} catch (e) {
+		res.json({ errcode: 500, errmessage: `Что-то пошло не так в Redis ${e}!` });
 	}
-})
+});
 
 app.listen(PORT, () => {
 	console.log(`Сервер запущен на порту ${PORT}`);

@@ -1,19 +1,22 @@
 {
   "name": "library",
   "version": "1.0.0",
-  "main": "library.js",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node -r dotenv/config task_2.1.js",
-		"prod": "node index.js"
+    "dev": "nodemon -L",
+    "prod": "node index.js"
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "axios": "^1.7.7",
     "ejs": "^3.1.10",
     "express": "^4.19.2",
     "multer": "^1.4.5-lts.1",
     "uuid": "^10.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
   }
 }

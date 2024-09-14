@@ -1,3 +1,4 @@
+const axios = require('axios');
 const express = require('express');
 const fs = require('fs');
 const router = express.Router();
@@ -6,6 +7,9 @@ const fileMulter = require('../middleware/file.js');
 const library = require('../storage/storage.js');
 const Book = require('../storage/Book.js');
 const { DEFAULT_FILE_COVER } = require('../config.js');
+
+const PAGES_HOST = process.env.PAGES_HOST || 'localhost';
+const PAGES_PORT = process.env.PAGES_PORT || '3001';
 
 router.get('/books', (req, res) => {
 	try {
@@ -17,7 +21,6 @@ router.get('/books', (req, res) => {
 	} catch {
 		res.status(500).json({ message: 'Что-то пошло не так' });
 	}
-	// res.json(books);
 });
 
 router.get('/books/create', (req, res) => {
@@ -30,17 +33,31 @@ router.get('/books/create', (req, res) => {
 	}
 });
 
-router.get('/books/:id', (req, res) => {
-	const book = library.books.find((book) => book.id === req.params.id);
+router.get('/books/:id', async (req, res) => {
+	const bookId = req.params.id;
+	const book = library.books.find((book) => book.id === bookId);
+
+	let count = 0;
+	try {
+		const PAGES_PATH =
+			'http://' + PAGES_HOST + ':' + PAGES_PORT + '/counter/' + bookId;
+		const result = await axios.post(PAGES_PATH + '/incr');
+		const response = await axios.get(PAGES_PATH);
+		count = response.data.count;
+	} catch (e) {
+		res.status(500).json({ message: e });
+	}
 
 	if (!book) {
 		return res.status(404).json('Потерялась книга');
 	}
 
 	try {
+		
 		res.render('api/books/view', {
 			title: 'О книге',
 			book: book,
+			views: count
 		});
 	} catch {
 		res.status(500).json({ message: 'Что-то пошло не так' });

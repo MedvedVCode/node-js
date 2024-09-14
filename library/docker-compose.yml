@@ -1,0 +1,22 @@
+services:
+  storage:
+    image: redis
+    volumes:
+      - ./data:/data
+  pages:
+    image: medvedvjava/counter:v2.0.0
+    environment:
+      - PORT=3003
+      - REDIS_URL=redis://storage
+    ports:
+      - 5000:3003
+    depends_on:
+      - storage 
+  library:
+    build: .
+    environment:
+      - PORT=3002
+      - PAGES_HOST=pages
+      - PAGES_PORT=3003
+    ports:
+      - 3002:3002

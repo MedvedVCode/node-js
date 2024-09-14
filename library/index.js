@@ -1,6 +1,7 @@
 const express = require('express');
 const logger = require('./middleware/logger');
 const error404 = require('./middleware/error404');
+const error500 = require('./middleware/error500');
 const apiRouter = require('./routers/api');
 const userRouter = require('./routers/user');
 const indexRouter = require('./routers/index');
